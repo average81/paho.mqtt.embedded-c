@@ -35,6 +35,7 @@
 
 #include "MQTTPacket.h"
 #include "stdio.h"
+#include "MQTTPlatform.h"
 
 #if defined(MQTTCLIENT_PLATFORM_HEADER)
 /* The following sequence of macros converts the MQTTCLIENT_PLATFORM_HEADER value
@@ -54,7 +55,7 @@
 enum QoS { QOS0, QOS1, QOS2 };
 
 /* all failure return codes must be negative */
-enum returnCode { BUFFER_OVERFLOW = -2, FAILURE = -1, SUCCESS = 0 };
+enum returnCode { MQTT_BUFFER_OVERFLOW = -2, MQTT_FAILURE = -1, MQTT_SUCCESS = 0 };
 
 /* The Platform specific header must define the Network and Timer structures and functions
  * which operate on them.
@@ -67,11 +68,11 @@ typedef struct Network
 
 /* The Timer structure must be defined in the platform specific header,
  * and have the following functions to operate on it.  */
-extern void TimerInit(Timer*);
-extern char TimerIsExpired(Timer*);
-extern void TimerCountdownMS(Timer*, unsigned int);
-extern void TimerCountdown(Timer*, unsigned int);
-extern int TimerLeftMS(Timer*);
+extern void TimerInit(Timer* tmr);
+extern char TimerIsExpired(Timer* tmr);
+extern void TimerCountdownMS(Timer* tmr, unsigned int ms);
+extern void TimerCountdown(Timer* tmr, unsigned int cnt);
+extern int TimerLeftMS(Timer* tmr);
 
 typedef struct MQTTMessage
 {
